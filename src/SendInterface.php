@@ -38,6 +38,7 @@ interface SendInterface
     public const TAG_TICKET_UPDATE = 'TICKET_UPDATE';
     public const TAG_CONFIRMED_EVENT_UPDATE = 'CONFIRMED_EVENT_UPDATE';
     public const TAG_POST_PURCHASE_UPDATE = 'POST_PURCHASE_UPDATE';
+    public const TAG_HUMAN_AGENT = 'HUMAN_AGENT';
 
     public const MESSAGING_TYPE_RESPONSE = 'RESPONSE';
     public const MESSAGING_TYPE_UPDATE = 'UPDATE';
