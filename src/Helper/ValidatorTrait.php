@@ -259,6 +259,7 @@ trait ValidatorTrait
             SendInterface::TAG_TRANSPORTATION_UPDATE,
             SendInterface::TAG_FEATURE_FUNCTIONALITY_UPDATE,
             SendInterface::TAG_TICKET_UPDATE,
+            SendInterface::TAG_HUMAN_AGENT,
         ];
     }
 
