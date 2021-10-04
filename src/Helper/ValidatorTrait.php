@@ -122,10 +122,14 @@ trait ValidatorTrait
      */
     protected function isValidExtension(string $filename, array $allowedExtension): void
     {
-        $ext = pathinfo($filename, \PATHINFO_EXTENSION);
-        if (empty($ext) || !\in_array($ext, $allowedExtension, true)) {
-            throw new InvalidExtensionException(sprintf('"%s" does not have a valid extension. Allowed extensions are "%s".', $filename, implode(', ', $allowedExtension)));
-        }
+        return;
+
+        // 不需要在這端就擋掉，讓 fb 決定吧
+        // @jocoonopa 2021-10-4 for marias
+        // $ext = pathinfo($filename, \PATHINFO_EXTENSION);
+        // if (empty($ext) || !\in_array($ext, $allowedExtension, true)) {
+        //     throw new InvalidExtensionException(sprintf('"%s" does not have a valid extension. Allowed extensions are "%s".', $filename, implode(', ', $allowedExtension)));
+        // }
     }
 
     /**
