@@ -20,6 +20,8 @@ final class MessageEvent extends AbstractEvent
      */
     protected $message;
 
+    protected $attachmentIndex;
+
     /**
      * MessageEvent constructor.
      */
@@ -62,5 +64,25 @@ final class MessageEvent extends AbstractEvent
         $message = Message::create($payload['message']);
 
         return new self($senderId, $recipientId, $timestamp, $message);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAttachmentIndex()
+    {
+        return $this->attachmentIndex;
+    }
+
+    /**
+     * @param mixed $attachmentIndex
+     *
+     * @return self
+     */
+    public function setAttachmentIndex($attachmentIndex)
+    {
+        $this->attachmentIndex = $attachmentIndex;
+
+        return $this;
     }
 }
