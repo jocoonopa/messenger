@@ -93,9 +93,9 @@ class Message implements \JsonSerializable
      */
     public function addQuickReply(QuickReply $quickReply): self
     {
-        $this->isValidArray($this->quickReplies, 11);
-
         $this->quickReplies[] = $quickReply;
+
+        $this->isValidArray($this->quickReplies, 13, 1);
 
         return $this;
     }
@@ -119,7 +119,8 @@ class Message implements \JsonSerializable
      */
     private function isValidQuickReplies(array $quickReplies): void
     {
-        $this->isValidArray($quickReplies, 12, 1);
+        $this->isValidArray($quickReplies, 13, 1);
+
         foreach ($quickReplies as $quickReply) {
             if (!$quickReply instanceof QuickReply) {
                 throw new InvalidClassException(sprintf('Array can only contain instance of %s.', QuickReply::class));

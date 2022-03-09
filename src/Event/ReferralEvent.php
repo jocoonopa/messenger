@@ -51,10 +51,25 @@ final class ReferralEvent extends AbstractEvent
      */
     public static function create(array $payload): self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
-        $timestamp = $payload['timestamp'];
-        $referral = Referral::create($payload['referral']);
+        $senderId = null;
+
+        if (isset($payload['sender']) && isset($payload['sender']['id'])) {
+            $senderId = $payload['sender']['id'];
+        } else {
+            $senderId = 'sender';
+        }
+
+        $recipientId = null;
+
+        if (isset($payload['recipient']) && isset($payload['recipient']['id'])) {
+            $recipientId = $payload['recipient']['id'];
+        } else {
+            $recipientId = 'no_recipient';
+        }
+
+        $timestamp = isset($payload['timestamp']) ? $payload['timestamp'] : '1520567363';
+
+        $referral = Referral::create(isset($payload['referral']) ? $payload['referral'] : null);
 
         return new self($senderId, $recipientId, $timestamp, $referral);
     }
