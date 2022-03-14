@@ -105,7 +105,7 @@ class Webhook extends AbstractApi
         $object = $decodedBody['object'] ?? null;
         $entry = $decodedBody['entry'] ?? null;
 
-        return $object === 'page' && $entry !== null;
+        return in_array($object, ['page', 'instagram']) && $entry !== null;
     }
 
     public function getBody(): string
