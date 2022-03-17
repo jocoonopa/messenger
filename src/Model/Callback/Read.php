@@ -29,6 +29,6 @@ class Read
      */
     public static function create(array $callbackData): self
     {
-        return new self($callbackData['watermark']);
+        return new self(isset($callbackData['watermark']) ? $callbackData['watermark'] : 0);
     }
 }
