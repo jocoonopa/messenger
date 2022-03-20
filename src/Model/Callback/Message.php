@@ -107,14 +107,19 @@ class Message
         return !empty($this->attachments);
     }
 
-    public function getReplyTo(): ?string
+    public function hasReplyTo(): bool
+    {
+        return !empty($this->replyTo);
+    }
+
+    public function getReplyTo()
     {
         return $this->replyTo;
     }
 
     public function isReply(): bool
     {
-        return $this->replyTo !== null && $this->replyTo !== '';
+        return $this->replyTo !== null;
     }
 
     public function getEntities(): array
@@ -155,11 +160,42 @@ class Message
         $text = $callbackData['text'] ?? null;
         $attachments = $callbackData['attachments'] ?? [];
         $quickReply = $callbackData['quick_reply']['payload'] ?? null;
-        $replyTo = $callbackData['reply_to']['mid'] ?? null;
+
+        // << FB reply to >>
+        // [
+        //      "mid" => "{mid}",
+        //      "text" => "supersport",
+        //      "reply_to" => [
+        //          "mid" => "{mid}",
+        //      ],
+        // ]
+        // ------------------------------------------------
+        // << Instagram reply to >>
+        // [
+        //     "mid" => "{mid}"
+        //     "text" => "reply event"
+        //     "reply_to" => [
+        //         "story" => [
+        //             "url" => "{url}"
+        //             "id" => "18171245791202044"
+        //         ]
+        //     ]
+        // ]
+
+        $replyTo = $callbackData['reply_to'] ?? null;
         $entities = $callbackData['nlp']['entities'] ?? [];
         $traits = $callbackData['nlp']['traits'] ?? [];
         $detectedLocales = $callbackData['nlp']['detected_locales'] ?? [];
 
-        return new self($callbackData['mid'], $text, $quickReply, $attachments, $replyTo, $entities, $traits, $detectedLocales);
+        return new self(
+            $callbackData['mid'],
+            $text,
+            $quickReply,
+            $attachments,
+            $replyTo,
+            $entities,
+            $traits,
+            $detectedLocales
+        );
     }
 }
