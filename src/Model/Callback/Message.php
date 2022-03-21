@@ -57,7 +57,7 @@ class Message
         ?string $text = null,
         ?string $quickReply = null,
         array $attachments = [],
-        ?string $replyTo = null,
+        $replyTo = null,
         array $entities = [],
         array $traits = [],
         array $detectedLocales = []
