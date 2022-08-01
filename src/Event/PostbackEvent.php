@@ -51,10 +51,12 @@ final class PostbackEvent extends AbstractEvent
      */
     public static function create(array $payload): self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
-        $timestamp = $payload['timestamp'];
-        $postback = Postback::create($payload['postback']);
+        $senderId = isset($payload['sender']['id']) ? $payload['sender']['id'] : '';
+        $recipientId = isset($payload['recipient']['id']) ? $payload['recipient']['id'] : '';
+        $timestamp = isset($payload['timestamp']) ? $payload['timestamp'] : '';
+        $postback = isset($payload['postback']) ? $payload['postback'] : '';
+
+        $postback = Postback::create($postback);
 
         return new self($senderId, $recipientId, $timestamp, $postback);
     }
