@@ -50,10 +50,9 @@ trait ValidatorTrait
      */
     protected function isValidUrl(string $value): void
     {
-        if (!preg_match(
-            '/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)$/',
-            $value
-        )) {
+        $result = filter_var($value, FILTER_VALIDATE_URL);
+
+        if ((bool) $result === false) {
             throw new InvalidUrlException(sprintf('"%s" is not a valid url.', $value));
         }
     }
