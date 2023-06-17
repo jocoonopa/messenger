@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Model\Callback;
 
+use Kerox\Messenger\Exception\InvalidPassThreadControlException;
+
 class PassThreadControl
 {
     /**
@@ -40,6 +42,12 @@ class PassThreadControl
      */
     public static function create(array $callbackData): self
     {
-        return new self($callbackData['new_owner_app_id'], $callbackData['metadata']);
+        if (! is_numeric($callbackData['new_owner_app_id'])) {
+            throw new InvalidPassThreadControlException();
+        }
+
+        $newOwnerAppId = (int) $callbackData['new_owner_app_id'];
+
+        return new self($newOwnerAppId, $callbackData['metadata']);
     }
 }
