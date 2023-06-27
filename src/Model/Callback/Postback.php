@@ -9,6 +9,11 @@ class Postback
     /**
      * @var string
      */
+    protected $mid;
+
+    /**
+     * @var string
+     */
     protected $title;
 
     /**
@@ -26,11 +31,17 @@ class Postback
      *
      * @param \Kerox\Messenger\Model\Callback\Referral $referral
      */
-    public function __construct(string $title, ?string $payload = null, ?Referral $referral = null)
+    public function __construct(string $title, ?string $payload = null, ?Referral $referral = null, $mid = null)
     {
         $this->title = $title;
         $this->payload = $payload;
         $this->referral = $referral;
+        $this->mid = $mid;
+    }
+
+    public function getMid(): string
+    {
+        return $this->mid;
     }
 
     public function getTitle(): string
@@ -68,7 +79,8 @@ class Postback
     {
         $payload = $callbackData['payload'] ?? null;
         $referral = isset($callbackData['referral']) ? Referral::create($callbackData['referral']) : null;
+        $mid = isset($callbackData['mid']) ? $callbackData['mid'] : null;
 
-        return new self($callbackData['title'], $payload, $referral);
+        return new self($callbackData['title'], $payload, $referral, $mid);
     }
 }
