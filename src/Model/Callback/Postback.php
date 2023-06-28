@@ -39,7 +39,7 @@ class Postback
         $this->mid = $mid;
     }
 
-    public function getMid(): string
+    public function getMid(): ?string
     {
         return $this->mid;
     }
