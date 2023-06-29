@@ -77,6 +77,13 @@ class Message
         return $this->messageId;
     }
 
+    public function setText($value)
+    {
+        $this->text = (string) $value;
+
+        return $this;
+    }
+
     public function getText(): ?string
     {
         return $this->text;
