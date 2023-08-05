@@ -119,6 +119,13 @@ class Message
         return !empty($this->replyTo);
     }
 
+    public function setReplyTo($replyTo)
+    {
+        $this->replyTo = $replyTo;
+
+        return $this;
+    }
+
     public function getReplyTo()
     {
         return $this->replyTo;
@@ -127,6 +134,13 @@ class Message
     public function isReply(): bool
     {
         return $this->replyTo !== null;
+    }
+
+    public function setEntities($entities): array
+    {
+        $this->entities = $entities;
+
+        return $this;
     }
 
     public function getEntities(): array
