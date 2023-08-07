@@ -46,6 +46,8 @@ class Message
      */
     protected $detectedLocales;
 
+    protected $isUnsupported;
+
     /**
      * Message constructor.
      *
@@ -60,7 +62,8 @@ class Message
         $replyTo = null,
         array $entities = [],
         array $traits = [],
-        array $detectedLocales = []
+        array $detectedLocales = [],
+        $isUnsupported = false
     ) {
         $this->messageId = $messageId;
         $this->text = $text;
@@ -70,6 +73,7 @@ class Message
         $this->entities = $entities;
         $this->traits = $traits;
         $this->detectedLocales = $detectedLocales;
+        $this->isUnsupported = $isUnsupported;
     }
 
     public function getMessageId(): string
@@ -207,6 +211,7 @@ class Message
         $entities = $callbackData['nlp']['entities'] ?? [];
         $traits = $callbackData['nlp']['traits'] ?? [];
         $detectedLocales = $callbackData['nlp']['detected_locales'] ?? [];
+        $isunsupported = $callbackData['is_unsupported'] ?? false;
 
         return new self(
             $callbackData['mid'],
@@ -216,7 +221,40 @@ class Message
             $replyTo,
             $entities,
             $traits,
-            $detectedLocales
+            $detectedLocales,
+            $isunsupported
         );
+    }
+
+    /**
+     * @param array $detectedLocales
+     *
+     * @return self
+     */
+    public function setDetectedLocales(array $detectedLocales)
+    {
+        $this->detectedLocales = $detectedLocales;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsUnsupported()
+    {
+        return $this->isUnsupported;
+    }
+
+    /**
+     * @param mixed $isUnsupported
+     *
+     * @return self
+     */
+    public function setIsUnsupported($isUnsupported)
+    {
+        $this->isUnsupported = $isUnsupported;
+
+        return $this;
     }
 }
