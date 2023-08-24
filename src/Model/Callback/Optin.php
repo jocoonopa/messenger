@@ -29,6 +29,6 @@ class Optin
      */
     public static function create(array $callbackData): self
     {
-        return new self($callbackData['ref']);
+        return new self(isset($callbackData['ref']) ? $callbackData['ref'] : '');
     }
 }

@@ -75,10 +75,10 @@ class Reaction
     public static function create(array $callbackData): self
     {
         return new self(
-            $callbackData['reaction'],
-            $callbackData['emoji'],
-            $callbackData['action'],
-            $callbackData['mid']
+            isset($callbackData['reaction']) ? $callbackData['reaction'] : '',
+            isset($callbackData['emoji']) ? $callbackData['emoji'] : '',
+            isset($callbackData['action']) ? $callbackData['action'] : '',
+            isset($callbackData['mid']) ? $callbackData['mid'] : ''
         );
     }
 }
