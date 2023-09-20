@@ -32,6 +32,11 @@ final class CommentEvent extends AbstractEvent
         $this->message = $message;
     }
 
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
     /**
      * @return \Kerox\Messenger\Event\CommentEvent
      */
