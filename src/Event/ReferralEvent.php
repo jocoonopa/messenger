@@ -6,6 +6,8 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\Referral;
 
+use Illuminate\Support\Arr;
+
 final class ReferralEvent extends AbstractEvent
 {
     public const NAME = 'referral';
@@ -49,27 +51,19 @@ final class ReferralEvent extends AbstractEvent
     /**
      * @return \Kerox\Messenger\Event\ReferralEvent
      */
-    public static function create(array $payload): self
+    public static function create(array $payload): ?self
     {
-        $senderId = null;
+        $senderId = Arr::get($payload, 'sender.id');
 
-        if (isset($payload['sender']) && isset($payload['sender']['id'])) {
-            $senderId = $payload['sender']['id'];
-        } else {
-            $senderId = 'sender';
+        if (blank($senderId)) {
+            return null;
         }
 
-        $recipientId = null;
+        $recipientId = Arr::get($payload, 'recipient.id');
 
-        if (isset($payload['recipient']) && isset($payload['recipient']['id'])) {
-            $recipientId = $payload['recipient']['id'];
-        } else {
-            $recipientId = 'no_recipient';
-        }
+        $timestamp = Arr::get($payload, 'timestamp', time());
 
-        $timestamp = isset($payload['timestamp']) ? $payload['timestamp'] : '1520567363';
-
-        $referral = Referral::create(isset($payload['referral']) ? $payload['referral'] : null);
+        $referral = Referral::create(Arr::get($payload, 'referral'));
 
         return new self($senderId, $recipientId, $timestamp, $referral);
     }

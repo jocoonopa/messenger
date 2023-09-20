@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Model\Callback;
 
+use Illuminate\Support\Arr;
 use Kerox\Messenger\Event\EventFactory;
 
 class Entry
@@ -11,6 +12,7 @@ class Entry
     private const CHANNELS = [
         'messaging',
         'standby',
+        'changes',
     ];
 
     /**
@@ -54,6 +56,7 @@ class Entry
     }
 
     /**
+     * @param $entry
      * @return \Kerox\Messenger\Model\Callback\Entry
      */
     public static function create(array $entry): self
@@ -62,8 +65,14 @@ class Entry
 
         foreach (self::CHANNELS as $channel) {
             if (isset($entry[$channel])) {
-                foreach ($entry[$channel] as $event) {
-                    $events[] = EventFactory::create($event);
+                foreach ($entry[$channel] as $payload) {
+                    $event = EventFactory::create($payload);
+
+                    if (blank($event)) {
+                        continue;
+                    }
+
+                    $events[] = $event;
                 }
             }
         }

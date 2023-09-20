@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
+use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Postback;
 
 final class PostbackEvent extends AbstractEvent
@@ -49,12 +50,16 @@ final class PostbackEvent extends AbstractEvent
     /**
      * @return \Kerox\Messenger\Event\PostbackEvent
      */
-    public static function create(array $payload): self
+    public static function create(array $payload): ?self
     {
-        $senderId = isset($payload['sender']['id']) ? $payload['sender']['id'] : '';
-        $recipientId = isset($payload['recipient']['id']) ? $payload['recipient']['id'] : '';
-        $timestamp = isset($payload['timestamp']) ? $payload['timestamp'] : '';
-        $postback = isset($payload['postback']) ? $payload['postback'] : '';
+        $senderId = Arr::get($payload, 'sender.id');
+        $recipientId = Arr::get($payload, 'recipient.id');
+        $timestamp = Arr::get($payload, 'timestamp');
+        $postback = Arr::get($payload, 'postback');
+
+        if (blank($senderId)) {
+            return null;
+        }
 
         $postback = Postback::create($postback);
 

@@ -6,6 +6,8 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\Read;
 
+use Illuminate\Support\Arr;
+
 final class ReadEvent extends AbstractEvent
 {
     public const NAME = 'read';
@@ -51,10 +53,15 @@ final class ReadEvent extends AbstractEvent
      */
     public static function create(array $payload): self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
-        $timestamp = $payload['timestamp'];
-        $read = Read::create($payload['read']);
+        $senderId = Arr::get($payload, 'sender.id');
+        $recipientId = Arr::get($payload, 'recipient.id');
+        $timestamp = Arr::get($payload, 'timestamp');
+
+        if (blank($senderId)) {
+            return null;
+        }
+
+        $read = Read::create(Arr::get($payload, 'read'));
 
         return new self($senderId, $recipientId, $timestamp, $read);
     }

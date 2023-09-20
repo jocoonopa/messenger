@@ -24,15 +24,18 @@ final class EventFactory
         'referral' => ReferralEvent::class,
         'game_play' => GamePlayEvent::class,
         'reaction' => ReactionEvent::class,
+        'value' => CommentEvent::class,
     ];
 
     /**
      * @return \Kerox\Messenger\Event\AbstractEvent
      */
-    public static function create(array $payload): AbstractEvent
+    public static function create(array $payload): ?AbstractEvent
     {
         foreach (array_keys($payload) as $key) {
+            // 'value'
             if (\array_key_exists($key, self::EVENTS)) {
+                // CommentEvent::class
                 $className = self::EVENTS[$key];
                 if (isset($payload['message']['is_echo'])) {
                     $className = MessageEchoEvent::class;

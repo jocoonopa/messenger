@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
+use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Reaction;
 
 final class ReactionEvent extends AbstractEvent
@@ -46,12 +47,16 @@ final class ReactionEvent extends AbstractEvent
     /**
      * @return \Kerox\Messenger\Event\ReactionEvent
      */
-    public static function create(array $payload): self
+    public static function create(array $payload): ?self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
-        $timestamp = $payload['timestamp'];
-        $reaction = Reaction::create($payload['reaction']);
+        $senderId = Arr::get($payload, 'sender.id');
+        $recipientId = Arr::get($payload, 'recipient.id');
+        $timestamp = Arr::get($payload, 'timestamp');
+        $reaction = Reaction::create(Arr::get($payload, 'reaction'));
+
+        if (blank($senderId)) {
+            return null;
+        }
 
         return new self($senderId, $recipientId, $timestamp, $reaction);
     }

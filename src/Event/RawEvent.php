@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
+use Illuminate\Support\Arr;
+
 final class RawEvent extends AbstractEvent
 {
     public const NAME = 'raw';
@@ -36,10 +38,15 @@ final class RawEvent extends AbstractEvent
     /**
      * @return \Kerox\Messenger\Event\RawEvent
      */
-    public static function create(array $payload): self
+    public static function create(array $payload): ?self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
+        $senderId = Arr::get($payload, 'sender.id');
+        $recipientId = Arr::get($payload, 'recipient.id');
+
+        if (blank($senderId) || blank($recipientId)) {
+            return null;
+        }
+
         unset($payload['sender'], $payload['recipient']);
 
         return new self($senderId, $recipientId, $payload);

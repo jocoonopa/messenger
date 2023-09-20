@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
+use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Message;
 
 final class MessageEvent extends AbstractEvent
@@ -56,11 +57,16 @@ final class MessageEvent extends AbstractEvent
     /**
      * @return \Kerox\Messenger\Event\MessageEvent
      */
-    public static function create(array $payload): self
+    public static function create(array $payload): ?self
     {
-        $senderId = $payload['sender']['id'];
-        $recipientId = $payload['recipient']['id'];
-        $timestamp = $payload['timestamp'];
+        $senderId = Arr::get($payload, 'sender.id');
+        $recipientId = Arr::get($payload, 'recipient.id');
+        $timestamp = Arr::get($payload, 'timestamp');
+
+        if (blank($senderId)) {
+            return null;
+        }
+
         $message = Message::create($payload['message']);
 
         return new self($senderId, $recipientId, $timestamp, $message);
