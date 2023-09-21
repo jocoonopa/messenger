@@ -24,12 +24,12 @@ final class CommentEvent extends AbstractEvent
     /**
      * MessageEvent constructor.
      */
-    public function __construct(string $senderId, string $recipientId, int $timestamp, Comment $message)
+    public function __construct(string $senderId, string $recipientId, int $timestamp, Comment $comment)
     {
         parent::__construct($senderId, $recipientId);
 
         $this->timestamp = $timestamp;
-        $this->message = $message;
+        $this->comment = $comment;
     }
 
     public function getName(): string
@@ -56,5 +56,25 @@ final class CommentEvent extends AbstractEvent
         $comment = Comment::create($value);
 
         return new self($senderId, $recipientId, $timestamp, $comment);
+    }
+
+    /**
+     * @return \Kerox\Messenger\Model\Callback\Comment
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param \Kerox\Messenger\Model\Callback\Comment $comment
+     *
+     * @return self
+     */
+    public function setComment(Comment $comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
     }
 }
