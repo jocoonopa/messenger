@@ -56,7 +56,8 @@ final class CommentEvent extends AbstractEvent
             return null;
         }
 
-        $recipientId = $object === 'page' ? Arr::first(explode('_', Arr::get($value, 'post_id'))) : $this->;
+        $recipientId = $object === 'page' ? Arr::first(explode('_', Arr::get($value, 'post_id'))) : $this->resolveRecipientId($payload);
+
         $timestamp =  Arr::get($value, 'created_time');
 
         $comment = Comment::create($value);
