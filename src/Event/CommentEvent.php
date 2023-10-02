@@ -50,7 +50,13 @@ final class CommentEvent extends AbstractEvent
             return null;
         }
 
-        $recipientId = Arr::first(explode('_', Arr::get($value, 'post_id')));
+        $field =  Arr::get($payload, 'payload');
+
+        if (! $this->shouldCreate()) {
+            return null;
+        }
+
+        $recipientId = $object === 'page' ? Arr::first(explode('_', Arr::get($value, 'post_id'))) : $this->;
         $timestamp =  Arr::get($value, 'created_time');
 
         $comment = Comment::create($value);
@@ -76,5 +82,40 @@ final class CommentEvent extends AbstractEvent
         $this->comment = $comment;
 
         return $this;
+    }
+
+    protected function resolveRecipientId(array $payload)
+    {
+        $object = Arr::get($payload, 'object');
+
+        if ($object === 'page') {
+            return Arr::first(explode('_', Arr::get($payload, 'value.post_id', '')));
+        }
+
+        if ($object === 'instagram') {
+            return Arr::get($payload, 'recipient_id', '');
+        }
+
+        return '';
+    }
+
+    protected function shouldCreate(array $payload): bool
+    {
+        $object = Arr::get($payload, 'object');
+
+        switch ($object) {
+            case 'instagram':
+                return Arr::get($payload, 'field') === 'comment';
+                break;
+
+            case 'page':
+                return Arr::get($payload, 'field') === 'feed' &&
+                    Arr::get($payload, 'value.item') === 'comment';
+                break;
+
+            default:
+                return false;
+                break;
+        }
     }
 }

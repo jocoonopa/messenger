@@ -6,6 +6,7 @@ namespace Kerox\Messenger\Api;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\ServerRequest;
+use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Entry;
 use Kerox\Messenger\Request\WebhookRequest;
 use Kerox\Messenger\Response\WebhookResponse;
@@ -172,7 +173,10 @@ class Webhook extends AbstractApi
 
             $hydrated = [];
             foreach ($decodedBody['entry'] as $entry) {
-                $hydrated[] = Entry::create($entry);
+                $hydrated[] = Entry::create(
+                    entry: $entry,
+                    object: Arr::get($decodedBody, 'object'),
+                );
             }
 
             $this->hydratedEntries = $hydrated;

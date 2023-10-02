@@ -57,16 +57,21 @@ class Entry
 
     /**
      * @param $entry
+     * @param $object
      * @return \Kerox\Messenger\Model\Callback\Entry
      */
-    public static function create(array $entry): self
+    public static function create(array $entry, $object = null): self
     {
         $events = [];
 
         foreach (self::CHANNELS as $channel) {
             if (isset($entry[$channel])) {
                 foreach ($entry[$channel] as $payload) {
-                    $event = EventFactory::create($payload);
+                    $event = EventFactory::create([
+                        ...$payload,
+                        'object' => $object,
+                        'recipient_id' => $this->getId(),
+                    ]);
 
                     if (blank($event)) {
                         continue;
