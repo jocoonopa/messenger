@@ -70,7 +70,7 @@ class Entry
                     $event = EventFactory::create([
                         ...$payload,
                         'object' => $object,
-                        'recipient_id' => $this->getId(),
+                        'recipient_id' => Arr::get($entry, 'id'),
                     ]);
 
                     if (blank($event)) {

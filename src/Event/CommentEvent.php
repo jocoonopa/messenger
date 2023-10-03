@@ -50,9 +50,9 @@ final class CommentEvent extends AbstractEvent
             return null;
         }
 
-        $field =  Arr::get($payload, 'payload');
+        $field = Arr::get($payload, 'payload');
 
-        if (! $this->shouldCreate()) {
+        if (! static::shouldCreate($payload)) {
             return null;
         }
 
@@ -100,7 +100,7 @@ final class CommentEvent extends AbstractEvent
         return '';
     }
 
-    protected function shouldCreate(array $payload): bool
+    protected static function shouldCreate(array $payload): bool
     {
         $object = Arr::get($payload, 'object');
 
