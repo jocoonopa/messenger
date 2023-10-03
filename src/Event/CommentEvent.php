@@ -56,9 +56,29 @@ final class CommentEvent extends AbstractEvent
             return null;
         }
 
-        $recipientId = $object === 'page' ? Arr::first(explode('_', Arr::get($value, 'post_id'))) : $this->resolveRecipientId($payload);
+        $recipientId = static::resolveRecipientId($payload);
 
-        $timestamp =  Arr::get($value, 'created_time');
+        $object = Arr::get($payload, 'object');
+
+        $timestamp = Arr::get($value, 'created_time', now()->timestamp);
+
+        switch ($object) {
+            case 'page':
+                $comment = Comment::create($value);
+                break;
+
+            case 'instagram':
+                $comment = Comment::create([
+                    'comment_id' => Arr::get($value, 'id'),
+                    'message' => Arr::get($value, 'text'),
+                    'post_id' => Arr::get($value, 'media.id'),
+                ]);
+                break;
+
+            default:
+                return null;
+                break;
+        }
 
         $comment = Comment::create($value);
 
@@ -85,7 +105,7 @@ final class CommentEvent extends AbstractEvent
         return $this;
     }
 
-    protected function resolveRecipientId(array $payload)
+    protected static function resolveRecipientId(array $payload)
     {
         $object = Arr::get($payload, 'object');
 
@@ -106,7 +126,7 @@ final class CommentEvent extends AbstractEvent
 
         switch ($object) {
             case 'instagram':
-                return Arr::get($payload, 'field') === 'comment';
+                return Arr::get($payload, 'field') === 'comments';
                 break;
 
             case 'page':
