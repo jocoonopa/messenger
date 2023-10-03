@@ -80,8 +80,6 @@ final class CommentEvent extends AbstractEvent
                 break;
         }
 
-        $comment = Comment::create($value);
-
         return new self($senderId, $recipientId, $timestamp, $comment);
     }
 
