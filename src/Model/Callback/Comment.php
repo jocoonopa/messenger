@@ -29,6 +29,11 @@ class Comment
     protected $permalinkUrl;
 
     /**
+     * @var boolean|null
+     */
+    protected $isLive;
+
+    /**
      * Message constructor.
      *
      * @param string $text
@@ -39,11 +44,13 @@ class Comment
         $message,
         $postId,
         $permalinkUrl,
+        $isLive = false,
     ) {
         $this->commentId = $commentId;
         $this->message = $message;
         $this->postId = $postId;
         $this->permalinkUrl = $permalinkUrl;
+        $this->isLive = $isLive;
     }
 
     /**
@@ -56,6 +63,7 @@ class Comment
             message: Arr::get($callbackData, 'message'),
             postId: Arr::get($callbackData, 'post_id'),
             permalinkUrl: Arr::get($callbackData, 'post.permalink_url'),
+            isLive: Arr::get($callbackData, 'is_live'),
         );
     }
 
@@ -135,6 +143,26 @@ class Comment
     public function setPermalinkUrl($permalinkUrl)
     {
         $this->permalinkUrl = $permalinkUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsLive()
+    {
+        return $this->isLive;
+    }
+
+    /**
+     * @param mixed $isLive
+     *
+     * @return self
+     */
+    public function setIsLive($isLive)
+    {
+        $this->isLive = $isLive;
 
         return $this;
     }

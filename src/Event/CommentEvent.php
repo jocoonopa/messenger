@@ -50,8 +50,6 @@ final class CommentEvent extends AbstractEvent
             return null;
         }
 
-        $field = Arr::get($payload, 'payload');
-
         if (! static::shouldCreate($payload)) {
             return null;
         }
@@ -72,6 +70,7 @@ final class CommentEvent extends AbstractEvent
                     'comment_id' => Arr::get($value, 'id'),
                     'message' => Arr::get($value, 'text'),
                     'post_id' => Arr::get($value, 'media.id'),
+                    'is_live' => Arr::get($payload, 'field') === 'live_comments',
                 ]);
                 break;
 
@@ -122,13 +121,17 @@ final class CommentEvent extends AbstractEvent
     {
         $object = Arr::get($payload, 'object');
 
+        $field = Arr::get($payload, 'field');
+
         switch ($object) {
             case 'instagram':
-                return Arr::get($payload, 'field') === 'comments';
+                return in_array($field, [
+                    'comments', 'live_comments',
+                ]);
                 break;
 
             case 'page':
-                return Arr::get($payload, 'field') === 'feed' &&
+                return $field === 'feed' &&
                     Arr::get($payload, 'value.item') === 'comment';
                 break;
 
