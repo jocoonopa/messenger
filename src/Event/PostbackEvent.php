@@ -7,7 +7,7 @@ namespace Kerox\Messenger\Event;
 use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Postback;
 
-final class PostbackEvent extends AbstractEvent
+class PostbackEvent extends AbstractEvent
 {
     public const NAME = 'postback';
 

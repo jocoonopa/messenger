@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
-final class EventFactory
+class EventFactory
 {
     public const EVENTS = [
         'message' => MessageEvent::class,

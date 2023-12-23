@@ -7,7 +7,7 @@ namespace Kerox\Messenger\Event;
 use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\PassThreadControl;
 
-final class PassThreadControlEvent extends AbstractEvent
+class PassThreadControlEvent extends AbstractEvent
 {
     public const NAME = 'pass_thread_control';
 

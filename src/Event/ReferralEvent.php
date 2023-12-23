@@ -8,7 +8,7 @@ use Kerox\Messenger\Model\Callback\Referral;
 
 use Illuminate\Support\Arr;
 
-final class ReferralEvent extends AbstractEvent
+class ReferralEvent extends AbstractEvent
 {
     public const NAME = 'referral';
 

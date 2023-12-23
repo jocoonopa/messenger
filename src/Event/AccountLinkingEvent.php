@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\AccountLinking;
 
-final class AccountLinkingEvent extends AbstractEvent
+class AccountLinkingEvent extends AbstractEvent
 {
     public const NAME = 'account_linking';
 

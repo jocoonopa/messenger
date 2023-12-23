@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\Payment;
 
-final class PaymentEvent extends AbstractEvent
+class PaymentEvent extends AbstractEvent
 {
     public const NAME = 'payment';
 

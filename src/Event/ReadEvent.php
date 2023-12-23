@@ -8,7 +8,7 @@ use Kerox\Messenger\Model\Callback\Read;
 
 use Illuminate\Support\Arr;
 
-final class ReadEvent extends AbstractEvent
+class ReadEvent extends AbstractEvent
 {
     public const NAME = 'read';
 

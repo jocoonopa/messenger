@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\MessageEcho;
 
-final class MessageEchoEvent extends AbstractEvent
+class MessageEchoEvent extends AbstractEvent
 {
     public const NAME = 'message_echo';
 

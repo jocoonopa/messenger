@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Illuminate\Support\Arr;
 
-final class RawEvent extends AbstractEvent
+class RawEvent extends AbstractEvent
 {
     public const NAME = 'raw';
 

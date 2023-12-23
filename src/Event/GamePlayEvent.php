@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\GamePlay;
 
-final class GamePlayEvent extends AbstractEvent
+class GamePlayEvent extends AbstractEvent
 {
     public const NAME = 'game_play';
 

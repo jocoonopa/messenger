@@ -6,7 +6,7 @@ namespace Kerox\Messenger\Event;
 
 use Kerox\Messenger\Model\Callback\PreCheckout;
 
-final class PreCheckoutEvent extends AbstractEvent
+class PreCheckoutEvent extends AbstractEvent
 {
     public const NAME = 'pre_checkout';
 

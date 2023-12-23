@@ -7,7 +7,7 @@ namespace Kerox\Messenger\Event;
 use Illuminate\Support\Arr;
 use Kerox\Messenger\Model\Callback\Reaction;
 
-final class ReactionEvent extends AbstractEvent
+class ReactionEvent extends AbstractEvent
 {
     public const NAME = 'reaction';
 
