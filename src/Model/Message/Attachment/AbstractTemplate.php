@@ -19,6 +19,7 @@ abstract class AbstractTemplate extends AbstractAttachment
     protected const TYPE_OPEN_GRAPH = 'open_graph';
     protected const TYPE_PRODUCT = 'product';
     protected const TYPE_RECEIPT = 'receipt';
+    protected const TYPE_NOTIFICATION_MESSAGES = 'notification_messages';
 
     /**
      * Template constructor.

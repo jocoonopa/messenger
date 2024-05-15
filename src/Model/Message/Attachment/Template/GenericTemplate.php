@@ -39,7 +39,7 @@ class GenericTemplate extends AbstractTemplate
     }
 
     /**
-     *@throws \Kerox\Messenger\Exception\MessengerException
+     * @throws \Kerox\Messenger\Exception\MessengerException
      *
      * @return \Kerox\Messenger\Model\Message\Attachment\Template\GenericTemplate
      */
