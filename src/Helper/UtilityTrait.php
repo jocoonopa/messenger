@@ -11,7 +11,7 @@ trait UtilityTrait
      *
      * @param mixed $callback
      */
-    public function arrayFilter(array $array, $callback = ['self', 'filter']): array
+    public function arrayFilter(array $array, $callback = [static::class, 'filter']): array
     {
         foreach ($array as $k => $v) {
             if (\is_array($v)) {

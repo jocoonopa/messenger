@@ -36,7 +36,8 @@ class NotificationMessageTemplate extends AbstractTemplate
      */
     public function __construct(
         protected string $payload,
-        protected string $title = null,
+        protected string|null $title = null,
+        protected string|null $imageUrl = null,
         protected string $timezone = 'Asia/Taipei',
         protected string $ctaText = self::CTA_GET_UPDATES,
         protected array $elements = [],
@@ -65,6 +66,7 @@ class NotificationMessageTemplate extends AbstractTemplate
     public static function create(
         string $payload,
         string $title,
+        string $imageUrl,
         string $timezone,
         string $ctaText,
         array $elements,
@@ -73,6 +75,7 @@ class NotificationMessageTemplate extends AbstractTemplate
         return new self(
             $payload,
             $title,
+            $imageUrl,
             $timezone,
             $ctaText,
             $elements,
@@ -121,7 +124,7 @@ class NotificationMessageTemplate extends AbstractTemplate
 
     protected function validateTitle($title)
     {
-        if (mb_strlen($title) > 65) {
+        if (mb_strlen((string) $title) > 65) {
             throw new InvalidTypeException('title must be less than 65 characters.');
         }
     }
