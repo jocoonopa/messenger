@@ -11,8 +11,10 @@ trait UtilityTrait
      *
      * @param mixed $callback
      */
-    public function arrayFilter(array $array, $callback = [static::class, 'filter']): array
+    public function arrayFilter(array $array, $callback = null): array
     {
+        $callback = blank($callback) ? [static::class, 'filter'] : $callback;
+
         foreach ($array as $k => $v) {
             if (\is_array($v)) {
                 $array[$k] = $this->arrayFilter($v, $callback);
