@@ -22,6 +22,10 @@ class Optin
      *       "title" => "最新消息和促銷資訊"
      *   ]
      * ```
+     *
+     * notification_messages_status 唯有當用戶停止或恢復行銷訊息時，此欄位才會存在。
+     * {STOP NOTIFICATIONS,RESUME NOTIFICATIONS}
+     *
      */
     public function __construct(
         protected string $payload,
@@ -32,6 +36,7 @@ class Optin
         protected int $tokenExpiryTimestamp,
         protected string $userTokenStatus,
         protected string $notificationMessagesTimezone,
+        protected string|null $notificationMessagesStatus = null,
     )
     {
     }
@@ -76,6 +81,11 @@ class Optin
         return $this->notificationMessagesTimezone;
     }
 
+    public function getNotificationMessagesStatus(): string|null
+    {
+        return $this->notificationMessagesStatus;
+    }
+
     /**
      * @return \Kerox\Messenger\Model\Callback\Optin
      */
@@ -90,6 +100,7 @@ class Optin
             tokenExpiryTimestamp: Arr::get($callbackData, 'token_expiry_timestamp'),
             userTokenStatus: Arr::get($callbackData, 'user_token_status'),
             notificationMessagesTimezone: Arr::get($callbackData, 'notification_messages_timezone'),
+            notificationMessagesStatus: Arr::get($callbackData, 'notification_messages_status'),
         );
     }
 }
