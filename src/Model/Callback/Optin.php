@@ -28,14 +28,14 @@ class Optin
      *
      */
     public function __construct(
-        protected string $payload,
+        protected string|null $payload,
         protected string $title,
         protected string $type,
         protected string $notificationMessagesToken,
         protected string $notificationMessagesFrequency,
         protected int $tokenExpiryTimestamp,
         protected string $userTokenStatus,
-        protected string $notificationMessagesTimezone,
+        protected string|null $notificationMessagesTimezone,
         protected string|null $notificationMessagesStatus = null,
     )
     {
@@ -76,7 +76,7 @@ class Optin
         return $this->userTokenStatus;
     }
 
-    public function getNotificationMessagesTimezone(): string
+    public function getNotificationMessagesTimezone(): string|null
     {
         return $this->notificationMessagesTimezone;
     }
