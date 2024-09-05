@@ -24,6 +24,11 @@ class CommentReactionEvent extends AbstractEvent
     /**
      * @var string|null
      */
+    protected $commentId;
+
+    /**
+     * @var string|null
+     */
     protected $verb;
 
     /**
@@ -31,7 +36,7 @@ class CommentReactionEvent extends AbstractEvent
      */
     protected $reaction;
 
-    public function __construct(string $senderId, string $recipientId, int $timestamp, string|null $postId, string|null $verb, CommentReaction $reaction)
+    public function __construct(string $senderId, string $recipientId, int $timestamp, string|null $postId, string|null $commentId, string|null $verb, CommentReaction $reaction)
     {
         parent::__construct($senderId, $recipientId);
 
@@ -40,6 +45,8 @@ class CommentReactionEvent extends AbstractEvent
         $this->reaction = $reaction;
 
         $this->postId = $postId;
+
+        $this->commentId = $commentId;
 
         $this->verb = $verb;
     }
@@ -76,9 +83,11 @@ class CommentReactionEvent extends AbstractEvent
 
         $timestamp = Arr::get($value, 'created_time', now()->timestamp);
 
-        $postId = Arr::get($value, 'post_id', now()->timestamp);
+        $postId =  Arr::get($value, 'post_id');
 
-        $verb = Arr::get($value, 'verb', now()->timestamp);
+        $commentId =  Arr::get($value, 'comment_id');
+
+        $verb = Arr::get($value, 'verb');
 
         $reaction = CommentReaction::create($payload);
 
@@ -86,7 +95,7 @@ class CommentReactionEvent extends AbstractEvent
             return null;
         }
 
-        return new self($senderId, $recipientId, $timestamp, $postId, $verb, $reaction);
+        return new self($senderId, $recipientId, $timestamp, $postId, $commentId, $verb, $reaction);
     }
 
     protected static function resolveRecipientId(array $payload)
@@ -140,6 +149,26 @@ class CommentReactionEvent extends AbstractEvent
     public function setVerb($verb)
     {
         $this->verb = $verb;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommentId()
+    {
+        return $this->commentId;
+    }
+
+    /**
+     * @param string|null $commentId
+     *
+     * @return self
+     */
+    public function setCommentId($commentId)
+    {
+        $this->commentId = $commentId;
 
         return $this;
     }
