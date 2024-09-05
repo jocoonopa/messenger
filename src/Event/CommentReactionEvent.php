@@ -21,7 +21,7 @@ class CommentReactionEvent extends AbstractEvent
      */
     protected $reaction;
 
-    public function __construct(string $senderId, string $recipientId, int $timestamp, Reaction $reaction)
+    public function __construct(string $senderId, string $recipientId, int $timestamp, CommentReaction $reaction)
     {
         parent::__construct($senderId, $recipientId);
 
@@ -34,7 +34,7 @@ class CommentReactionEvent extends AbstractEvent
         return $this->timestamp;
     }
 
-    public function getReaction(): Reaction
+    public function getReaction(): CommentReaction
     {
         return $this->reaction;
     }
