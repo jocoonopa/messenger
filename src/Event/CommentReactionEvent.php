@@ -49,6 +49,8 @@ class CommentReactionEvent extends AbstractEvent
      */
     public static function create(array $payload): ?self
     {
+        $value = Arr::get($payload, 'value');
+
         $senderId = Arr::get($value, 'from.id');
 
         if (blank($senderId)) {
