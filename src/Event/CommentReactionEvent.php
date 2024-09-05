@@ -17,16 +17,31 @@ class CommentReactionEvent extends AbstractEvent
     protected $timestamp;
 
     /**
-     * @var \Kerox\Messenger\Model\Callback\Reaction
+     * @var string|null
+     */
+    protected $postId;
+
+    /**
+     * @var string|null
+     */
+    protected $verb;
+
+    /**
+     * @var \Kerox\Messenger\Model\Callback\CommentReaction
      */
     protected $reaction;
 
-    public function __construct(string $senderId, string $recipientId, int $timestamp, CommentReaction $reaction)
+    public function __construct(string $senderId, string $recipientId, int $timestamp, string|null $postId, string|null $verb, CommentReaction $reaction)
     {
         parent::__construct($senderId, $recipientId);
 
         $this->timestamp = $timestamp;
+
         $this->reaction = $reaction;
+
+        $this->postId = $postId;
+
+        $this->verb = $verb;
     }
 
     public function getTimestamp(): int
@@ -61,13 +76,17 @@ class CommentReactionEvent extends AbstractEvent
 
         $timestamp = Arr::get($value, 'created_time', now()->timestamp);
 
+        $postId = Arr::get($value, 'post_id', now()->timestamp);
+
+        $verb = Arr::get($value, 'verb', now()->timestamp);
+
         $reaction = CommentReaction::create($payload);
 
         if (blank($senderId)) {
             return null;
         }
 
-        return new self($senderId, $recipientId, $timestamp, $reaction);
+        return new self($senderId, $recipientId, $timestamp, $postId, $verb, $reaction);
     }
 
     protected static function resolveRecipientId(array $payload)
@@ -83,5 +102,45 @@ class CommentReactionEvent extends AbstractEvent
         }
 
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostId()
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @param string $postId
+     *
+     * @return self
+     */
+    public function setPostId($postId)
+    {
+        $this->postId = $postId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVerb()
+    {
+        return $this->verb;
+    }
+
+    /**
+     * @param string $verb
+     *
+     * @return self
+     */
+    public function setVerb($verb)
+    {
+        $this->verb = $verb;
+
+        return $this;
     }
 }
