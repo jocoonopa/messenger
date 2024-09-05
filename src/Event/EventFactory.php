@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Kerox\Messenger\Event;
 
+use Illuminate\Support\Arr;
+
 class EventFactory
 {
     public const EVENTS = [
@@ -21,10 +23,9 @@ class EventFactory
         'request_thread_control' => RequestThreadControlEvent::class,
         'policy-enforcement' => PolicyEnforcementEvent::class,
         'app_roles' => AppRolesEvent::class,
+        'reaction' => ReactionEvent::class,
         'referral' => ReferralEvent::class,
         'game_play' => GamePlayEvent::class,
-        'reaction' => ReactionEvent::class,
-        'value' => CommentEvent::class,
     ];
 
     /**
@@ -33,7 +34,34 @@ class EventFactory
     public static function create(array $payload): ?AbstractEvent
     {
         foreach (array_keys($payload) as $key) {
-            // 'value'
+            // 貼文的會有這種的:
+            //
+            // 'value' => [
+            //      "item" => "comment",
+            // ]
+            //
+            // 'value' => [
+            //      "item" => "reaction",
+            // ]
+            //
+            // 所以判斷要另外處理。
+            if ($key === 'value') {
+                $item = Arr::get($payload, 'value.item');
+
+                switch ($item) {
+                    case 'reaction':
+                        return CommentReactionEvent::create($payload);
+                        break;
+
+                    case 'comment':
+                        return CommentEvent::create($payload);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
             if (\array_key_exists($key, self::EVENTS)) {
                 // CommentEvent::class
                 $className = self::EVENTS[$key];
