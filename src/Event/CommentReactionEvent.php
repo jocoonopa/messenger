@@ -49,15 +49,37 @@ class CommentReactionEvent extends AbstractEvent
      */
     public static function create(array $payload): ?self
     {
-        $senderId = Arr::get($payload, 'sender.id');
-        $recipientId = Arr::get($payload, 'recipient.id');
-        $timestamp = Arr::get($payload, 'timestamp');
-        $reaction = CommentReaction::create(Arr::get($payload, 'value.reaction_type'));
+        $senderId = Arr::get($value, 'from.id');
+
+        if (blank($senderId)) {
+            return null;
+        }
+
+        $recipientId = static::resolveRecipientId($payload);
+
+        $timestamp = Arr::get($value, 'created_time', now()->timestamp);
+
+        $reaction = CommentReaction::create($payload);
 
         if (blank($senderId)) {
             return null;
         }
 
         return new self($senderId, $recipientId, $timestamp, $reaction);
+    }
+
+    protected static function resolveRecipientId(array $payload)
+    {
+        $object = Arr::get($payload, 'object');
+
+        if ($object === 'page') {
+            return Arr::first(explode('_', Arr::get($payload, 'value.post_id', '')));
+        }
+
+        if ($object === 'instagram') {
+            return Arr::get($payload, 'recipient_id', '');
+        }
+
+        return '';
     }
 }
