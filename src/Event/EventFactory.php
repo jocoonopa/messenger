@@ -33,35 +33,31 @@ class EventFactory
      */
     public static function create(array $payload): ?AbstractEvent
     {
-        foreach (array_keys($payload) as $key) {
-            // 貼文的會有這種的:
-            //
-            // 'value' => [
-            //      "item" => "comment",
-            // ]
-            //
-            // 'value' => [
-            //      "item" => "reaction",
-            // ]
-            //
-            // 所以判斷要另外處理。
-            if ($key === 'value') {
-                $item = Arr::get($payload, 'value.item');
+        $object = Arr::get($payload, 'object');
 
-                switch ($item) {
-                    case 'reaction':
-                        return CommentReactionEvent::create($payload);
-                        break;
+        /**
+         * 若 webhook JSON 的最外層是 "object": "instagram" → 是 IG 留言，沒有 item
+         * 若 "object": "page" 且 field 是 "feed" → 是 FB 留言，有 item
+         *
+         * @jocoonopa 2025-04-07
+         */
+        $item = $object === 'instagram' ? Arr::get($payload, 'field') : Arr::get($payload, 'value.item');
 
-                    case 'comment':
-                        return CommentEvent::create($payload);
-                        break;
+        switch ($item) {
+            case 'reaction':
+                return CommentReactionEvent::create($payload);
+                break;
 
-                    default:
-                        break;
-                }
-            }
+            case 'comments':
+            case 'comment':
+                return CommentEvent::create($payload);
+                break;
 
+            default:
+                break;
+        }
+
+        foreach ($payload as $key => $value) {
             if (\array_key_exists($key, self::EVENTS)) {
                 // CommentEvent::class
                 $className = self::EVENTS[$key];
