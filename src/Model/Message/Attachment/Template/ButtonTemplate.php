@@ -32,7 +32,7 @@ class ButtonTemplate extends AbstractTemplate
     {
         parent::__construct();
 
-        $this->isValidString($text, 640);
+        $this->isValidString($text, 1000);
         $this->isValidArray($buttons, 3);
 
         $this->text = $text;

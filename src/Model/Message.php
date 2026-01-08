@@ -47,7 +47,7 @@ class Message implements \JsonSerializable
     public function __construct($message)
     {
         if (\is_string($message)) {
-            $this->isValidString($message, 640);
+            $this->isValidString($message, 1000);
             $this->type = self::TYPE_TEXT;
         } elseif ($message instanceof AbstractAttachment) {
             $this->type = self::TYPE_ATTACHMENT;

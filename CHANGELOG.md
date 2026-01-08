@@ -4,6 +4,10 @@ The Messenger library follows [SemVer](http://semver.org/).
 
 ## 3.x
 
+**Changelog** (since [`3.5.46`](https://github.com/ker0x/messenger/compare/3.5.0...3.6.0))
+- 3.5.46 (2026-01)
+    - Increase limit to 1000 characters for `$text` in `\Kerox\Messenger\Model\Message\Attachment\Template\ButtonTemplate()`. (Thanks to @mferrara).
+
 **Changelog** (since [`3.4.0`](https://github.com/ker0x/messenger/compare/3.4.0...3.5.0))
 
 - 3.5.0 (2021-02)

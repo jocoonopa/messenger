@@ -32,7 +32,7 @@ class Optin
         protected string $title,
         protected string $type,
         protected string $notificationMessagesToken,
-        protected string $notificationMessagesFrequency,
+        protected string|null $notificationMessagesFrequency,
         protected int $tokenExpiryTimestamp,
         protected string $userTokenStatus,
         protected string|null $notificationMessagesTimezone,
@@ -61,7 +61,7 @@ class Optin
         return $this->notificationMessagesToken;
     }
 
-    public function getNotificationMessagesFrequency(): string
+    public function getNotificationMessagesFrequency(): string|null
     {
         return $this->notificationMessagesFrequency;
     }
