@@ -41,7 +41,7 @@ class Optin
     {
     }
 
-    public function getPayload(): string
+    public function getPayload(): string|null
     {
         return $this->payload;
     }
